@@ -14,7 +14,6 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('emergency_contact_name')->nullable();
             $table->string('emergency_contact_phone')->nullable();
-            $table->string('government_id')->nullable();
             $table->timestamps();
         });
     }
