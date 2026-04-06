@@ -20,9 +20,7 @@ return new class extends Migration
             $table->timestamp('resolved_at')->nullable();
             $table->decimal('estimated_cost', 10, 2)->nullable();
             $table->decimal('actual_cost', 10, 2)->nullable();
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
-            
             $table->index('unit_id');
             $table->index('tenant_id');
             $table->index('status');
