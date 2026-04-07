@@ -3,17 +3,37 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Property extends Model
 {
+    protected $table = 'properties';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'name', 'address', 'city', 'state', 'zip_code'
+        'landlord_id',
+        'name',
+        'address_line1',
+        'address_line2',
+        'city',
+        'state',
+        'postal_code',
+        'country',
+        'property_type',
+        'total_units'
     ];
     
-    // Define relationship: A property has many units
-    public function units(): HasMany
+    // Relationships
+    public function landlord()
     {
-        return $this->hasMany(Unit::class);
+        return $this->belongsTo(User::class, 'landlord_id');
+    }
+    
+    public function units()
+    {
+        return $this->hasMany(Unit::class, 'property_id');
+    }
+    
+    public function availableUnits()
+    {
+        return $this->hasMany(Unit::class, 'property_id')->where('is_available', true);
     }
 }
