@@ -12,60 +12,10 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
+
+Route::get('/app', function () {
+    return view('app');
+});
+
+
  
-Route::get('/user', function () {
-    // Get users from database
-    $users = \App\Models\User::all();  // Or however you want to get users
-    
-    // Pass the variable to the view
-    return view('users.index', ['users' => $users]);
-    // Or using compact()
-    // return view('users.index', compact('users'));
-});
-
-Route::get('/', function () {
-
-return view('unit');
-
-});
-
-
-Route::get('/', function () {
-
-return view('leas');
-
-});
-
-
-Route::get('/', function () {
-
-return view('user');
-
-});
-
-
-Route::get('/', function () {
-
-return view('user');
-
-});
-
-
-Route::get('/', function () {
-
-return view('user');
-
-});
-
-
-Route::get('/', function () {
-
-return view('user');
-
-});
-
-
-
-
-
-
