@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 
@@ -19,3 +20,16 @@ export default {
 
     plugins: [forms],
 };
+=======
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+    ],
+});
+>>>>>>> 70a291f (add slidbar and dashbaord)
