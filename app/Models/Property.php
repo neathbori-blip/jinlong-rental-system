@@ -6,34 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
 {
-    protected $table = 'properties';
-    protected $primaryKey = 'id';
-    protected $fillable = [
-        'landlord_id',
-        'name',
-        'address_line1',
-        'address_line2',
-        'city',
-        'state',
-        'postal_code',
-        'country',
-        'property_type',
-        'total_units'
-    ];
+    protected $fillable = ['name', 'location', 'price', 'status', 'description', 'bedrooms', 'bathrooms'];
     
-    // Relationships
-    public function landlord()
+    public function tenant()
     {
-        return $this->belongsTo(User::class, 'landlord_id');
+        return $this->hasOne(Tenant::class);
     }
     
-    public function units()
+    public function payments()
     {
-        return $this->hasMany(Unit::class, 'property_id');
-    }
-    
-    public function availableUnits()
-    {
-        return $this->hasMany(Unit::class, 'property_id')->where('is_available', true);
+        return $this->hasMany(Payment::class);
     }
 }

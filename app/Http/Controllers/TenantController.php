@@ -1,15 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Tenant;
+
 use Illuminate\Http\Request;
 
-class TenantController extends Controller
+class TenantController
 {
-    public function index()
-
-    {
-        return Tenant::all();
-    }
     //
 }

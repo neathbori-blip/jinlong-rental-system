@@ -1,21 +1,17 @@
 <?php
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\PropertyController;
-use App\Http\Controllers\UnitController;
-use App\Http\Controllers\LeaseController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\MaintenanceRequestController;
-use App\Http\Controllers\TenantController;
+
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\TenantController;
+use App\Http\Controllers\PaymentController;
 
-Route::get('/welcome', function () {
-    return view('welcome');
+Route::get('/', function () {
+    return redirect()->route('dashboard');
 });
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/app', function () {
-    return view('app');
-});
-
-
- 
+Route::resource('properties', PropertyController::class);
+Route::resource('tenants', TenantController::class);
+Route::resource('payments', PaymentController::class);
