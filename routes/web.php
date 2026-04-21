@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RentController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -18,3 +18,22 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+
+
+Route::get('/rent', [RentController::class, 'index']);
+
+
+Route::get('/rent', function () {
+    return view('layouts.rent');
+});
+
+
+
+// GET route - shows the form
+Route::get('/rent', [RentController::class, 'create']);
+
+// POST route - stores the data (THIS IS WHAT YOU WANT)
+Route::post('/rent', [RentController::class, 'store'])->name('rent.store');
