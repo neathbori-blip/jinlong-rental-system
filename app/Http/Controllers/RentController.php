@@ -10,24 +10,28 @@ class RentController extends Controller
     // Show the form (GET request)
     public function create()
     {
-        return view('layouts.rent');
+        return view('rent');
     }
-    
-    // Store data (POST request) - THIS IS THE POST METHOD
+
+    // Store data (POST request)
     public function store(Request $request)
     {
-        // Validate the data
         $validated = $request->validate([
             'item_name' => 'required|string|max:255',
             'customer_name' => 'required|string|max:255',
             'rental_days' => 'required|integer|min:1',
-            'total_price' => 'required|numeric',
+            'total_price' => 'required|numeric|min:0',
         ]);
-        
-        // Store in database
-        $rent = Rent::create($validated);
-        
-        // Return response
-        return redirect()->route('rent.store')->with('success', 'Data stored successfully!');
+
+        Rent::create($validated);
+
+        return redirect()->route('rent')->with('success', 'Rent created successfully!');
+    }
+
+    // Show all data
+    public function index()
+    {
+        $rent = Rent::all();
+        return view('rent', compact('rent'));
     }
 }

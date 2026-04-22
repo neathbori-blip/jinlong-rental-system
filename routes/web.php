@@ -17,7 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
 
 
 
@@ -32,8 +32,5 @@ Route::get('/rent', function () {
 
 
 
-// GET route - shows the form
-Route::get('/rent', [RentController::class, 'create']);
-
-// POST route - stores the data (THIS IS WHAT YOU WANT)
-Route::post('/rent', [RentController::class, 'store'])->name('rent.store');
+Route::get('/rent', [RentController::class, 'index'])->name('rent');
+Route::post('/rent', [RentController::class, 'store']);
