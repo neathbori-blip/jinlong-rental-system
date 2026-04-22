@@ -7,10 +7,27 @@ use App\Http\Controllers\TenantController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AuthController;
+
 
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
+
+
+
+// The GET route to show the form
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+
+// The POST route to process the data
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Example Dashboard (Protected)
+Route::get('/dashboard', function () {
+    return "Welcome to the system!";
+})->middleware('auth');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

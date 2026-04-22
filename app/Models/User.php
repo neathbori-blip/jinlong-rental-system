@@ -4,44 +4,19 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
+    // Only these fields can be filled (Security)
+    protected $fillable = ['name', 'email', 'password'];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Sensitive data that should never be shown in JSON/Arrays
+    protected $hidden = ['password', 'remember_token'];
 
+    // Logic: Automatically hash the password when it's saved
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    // Check if user is admin
-    public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
-
-    // Check if user is landlord
-    public function isLandlord()
-    {
-        return $this->role === 'landlord';
-    }
-
-    // Check if user is tenant
-    public function isTenant()
-    {
-        return $this->role === 'tenant';
-    }
 }
