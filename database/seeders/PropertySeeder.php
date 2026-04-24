@@ -47,5 +47,35 @@ class PropertySeeder extends Seeder
             'property_type' => 'house',
             'total_units' => 3
         ]);
+
+        
+    }
+}
+
+
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Property;
+
+class PropertySeeder extends Seeder
+{
+    public function run(): void
+    {
+        // Create 20 fake properties
+        for ($i = 1; $i <= 20; $i++) {
+            Property::create([
+                'title' => "Property {$i}: " . fake()->words(3, true),
+                'description' => fake()->paragraph(),
+                'type' => fake()->randomElement(['Apartment', 'House', 'Villa', 'Condo']),
+                'price' => fake()->numberBetween(100000, 1000000),
+                'location' => fake()->city() . ', ' . fake()->state(),
+                'bedrooms' => fake()->numberBetween(1, 5),
+                'bathrooms' => fake()->numberBetween(1, 4),
+                'size' => fake()->numberBetween(500, 5000),
+                'image' => null,
+            ]);
+        }
     }
 }
