@@ -1,4 +1,4 @@
-<div class="w-64 h-screen bg-#3700B3 text-black fixed">
+<div class="w-64 h-screen bg-green/100 text-black fixed">
 
     <div class="p-4 text-2xl font-bold shadow">
         Rental System
