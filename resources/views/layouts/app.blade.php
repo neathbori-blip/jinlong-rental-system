@@ -263,7 +263,7 @@
                 </a>
             </div>
             <div class="sidebar-item {{ request()->routeIs('properties.*') ? 'active' : '' }}">
-                <a href="{{ route('properties.index') }}">
+                
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                 </a>
@@ -275,7 +275,7 @@
                 </a>
             </div>
             <div class="sidebar-item {{ request()->routeIs('payments.*') ? 'active' : '' }}">
-                <a href="{{ route('payments.index') }}">
+                
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Payments</span>
                 </a>
