@@ -10,9 +10,6 @@ class Tenant extends Model
 {
     use HasFactory;
 
-    protected $table = 'tenants';
-    
-    // Fields that can be filled mass-assignment
     protected $fillable = [
         'full_name',
         'email',
@@ -23,36 +20,32 @@ class Tenant extends Model
         'monthly_rent',
         'security_deposit',
         'address',
-        'emergency_contact',
-        'notes'
+        'emergency_contact'
     ];
 
-    // Date casting
     protected $casts = [
         'lease_start_date' => 'date',
         'monthly_rent' => 'decimal:2',
-        'security_deposit' => 'decimal:2',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'security_deposit' => 'decimal:2'
     ];
 
-    // Get active tenants
+    // Accessor for formatted monthly rent
+    public function getFormattedMonthlyRentAttribute()
+    {
+        return '$' . number_format($this->monthly_rent, 2);
+    }
+
+    // Scope for active tenants
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
     }
 
-    // Get inactive tenants
-    public function scopeInactive($query)
-    {
-        return $query->where('status', 'inactive');
-    }
-
-    // Search tenants
+    // Scope for search
     public function scopeSearch($query, $term)
     {
-        return $query->where('full_name', 'like', "%{$term}%")
-                     ->orWhere('email', 'like', "%{$term}%")
-                     ->orWhere('unit', 'like', "%{$term}%");
+        return $query->where('full_name', 'LIKE', "%{$term}%")
+                     ->orWhere('email', 'LIKE', "%{$term}%")
+                     ->orWhere('unit', 'LIKE', "%{$term}%");
     }
 }

@@ -12,11 +12,14 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/tenants', [TenantController::class, 'index'])->name('tenants.index');
-Route::post('/tenants', [TenantController::class, 'store'])->name('tenants.store');
-Route::get('/tenants/{id}', [TenantController::class, 'show'])->name('tenants.show');
-Route::put('/tenants/{id}', [TenantController::class, 'update'])->name('tenants.update');
-Route::delete('/tenants/{id}', [TenantController::class, 'destroy'])->name('tenants.destroy');
 Route::get('/', function () {
     return redirect()->route('tenants.index');
+});
+
+Route::prefix('tenants')->name('tenants.')->group(function () {
+    Route::get('/', [TenantController::class, 'index'])->name('index');
+    Route::post('/', [TenantController::class, 'store'])->name('store');
+    Route::get('/{id}', [TenantController::class, 'show'])->name('show');
+    Route::put('/{id}', [TenantController::class, 'update'])->name('update');
+    Route::delete('/{id}', [TenantController::class, 'destroy'])->name('destroy');
 });

@@ -1,4 +1,5 @@
 <?php
+// app/Http/Controllers/TenantController.php
 
 namespace App\Http\Controllers;
 
@@ -8,30 +9,17 @@ use Illuminate\Support\Facades\Validator;
 
 class TenantController extends Controller
 {
-    /**
-     * Display all tenants (GET request)
-     */
+    // Display a listing of tenants
     public function index()
     {
-        // Get all tenants from database
-        $tenants = Tenant::orderBy('created_at', 'desc')->get();
-        
-        // Calculate statistics (using only existing columns)
-        $totalTenants = Tenant::count();
-        $activeTenants = Tenant::where('status', 'active')->count();
-        
-        // If monthly_rent doesn't exist, use 0 or alternative
-       
-        
-        return view('tenants.index', compact('tenants'));
+        // Make sure these variables are defined even if no data ex
+        // Return the view with all variables
+        return view('tenants.index');
     }
 
-    /**
-     * Store new tenant (POST request)
-     */
+    // Store a newly created tenant
     public function store(Request $request)
     {
-        // Validate only existing columns
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|unique:tenants,email',
@@ -39,56 +27,33 @@ class TenantController extends Controller
             'unit' => 'required|string|max:50',
             'status' => 'required|in:active,inactive',
             'lease_start_date' => 'nullable|date',
-            // Remove monthly_rent validation if column doesn't exist
+            'monthly_rent' => 'nullable|numeric|min:0',
+            'security_deposit' => 'nullable|numeric|min:0',
+            'address' => 'nullable|string',
+            'emergency_contact' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        // Only use columns that exist in your table
-        $tenantData = [
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'unit' => $request->unit,
-            'status' => $request->status,
-            'lease_start_date' => $request->lease_start_date,
-        ];
-        
-        // Add only if column exists
-        if (Schema::hasColumn('tenants', 'monthly_rent')) {
-            $tenantData['monthly_rent'] = $request->monthly_rent ?? 0;
-        }
-        
-        if (Schema::hasColumn('tenants', 'security_deposit')) {
-            $tenantData['security_deposit'] = $request->security_deposit ?? 0;
-        }
-
-        $tenant = Tenant::create($tenantData);
+        $tenant = Tenant::create($request->all());
 
         return response()->json([
             'success' => true,
             'message' => 'Tenant created successfully!',
             'tenant' => $tenant
-        ], 201);
+        ]);
     }
 
-    /**
-     * Get single tenant
-     */
+    // Display the specified tenant
     public function show($id)
     {
         $tenant = Tenant::findOrFail($id);
         return response()->json($tenant);
     }
 
-    /**
-     * Update tenant
-     */
+    // Update the specified tenant
     public function update(Request $request, $id)
     {
         $tenant = Tenant::findOrFail($id);
@@ -100,29 +65,17 @@ class TenantController extends Controller
             'unit' => 'required|string|max:50',
             'status' => 'required|in:active,inactive',
             'lease_start_date' => 'nullable|date',
+            'monthly_rent' => 'nullable|numeric|min:0',
+            'security_deposit' => 'nullable|numeric|min:0',
+            'address' => 'nullable|string',
+            'emergency_contact' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $tenantData = [
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'unit' => $request->unit,
-            'status' => $request->status,
-            'lease_start_date' => $request->lease_start_date,
-        ];
-        
-        if (Schema::hasColumn('tenants', 'monthly_rent')) {
-            $tenantData['monthly_rent'] = $request->monthly_rent ?? 0;
-        }
-
-        $tenant->update($tenantData);
+        $tenant->update($request->all());
 
         return response()->json([
             'success' => true,
@@ -131,9 +84,7 @@ class TenantController extends Controller
         ]);
     }
 
-    /**
-     * Delete tenant
-     */
+    // Remove the specified tenant
     public function destroy($id)
     {
         $tenant = Tenant::findOrFail($id);

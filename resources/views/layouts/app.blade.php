@@ -252,7 +252,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h3><i class="fas fa-key"></i> RentalHub</h3>
+            <h3><i class="fas fa-key"></i>Jinlong Rental</h3>
             <p>Property Management</p>
         </div>
         <div class="sidebar-menu">
