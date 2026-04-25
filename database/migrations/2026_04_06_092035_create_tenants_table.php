@@ -1,5 +1,4 @@
 <?php
-// database/migrations/xxxx_xx_xx_xxxxxx_create_tenants_table.php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -11,17 +10,10 @@ return new class extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('email')->unique();
-            $table->string('phone', 20)->nullable();
-            $table->string('unit', 50);
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->date('lease_start_date')->nullable();
-            $table->decimal('monthly_rent', 10, 2)->default(0);
-            $table->decimal('security_deposit', 10, 2)->default(0);
-            $table->text('address')->nullable();
-            $table->text('emergency_contact')->nullable();
-            $table->text('notes')->nullable();
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
+            $table->date('date_of_birth')->nullable();
+            $table->string('emergency_contact_name')->nullable();
+            $table->string('emergency_contact_phone')->nullable();
             $table->timestamps();
         });
     }

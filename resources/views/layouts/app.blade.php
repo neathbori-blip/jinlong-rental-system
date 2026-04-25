@@ -31,7 +31,7 @@
             top: 0;
             width: 260px;
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3700B3 0%, #03dac6 100%);
             color: white;
             transition: all 0.3s;
             z-index: 1000;
