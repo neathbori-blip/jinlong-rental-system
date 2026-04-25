@@ -284,7 +284,7 @@
             </div>
 
                 <div class="sidebar-item {{ request()->routeIs('leases.*') ? 'active' : '' }}">
-                    <a href="">
+                    <a href="{{ route('leases.index') }}">
                         <i class="fas fa-file-signature"></i>
                         <span>Leases</span>
                     </a>
