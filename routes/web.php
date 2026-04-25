@@ -12,6 +12,6 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::resource('properties', PropertyController::class);
-Route::resource('tenants', TenantController::class);
-Route::resource('payments', PaymentController::class);
+Route::get('/leases', function () {
+    return view('leases.index');
+})->name('leases.index');
