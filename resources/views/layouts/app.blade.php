@@ -255,6 +255,8 @@
             <h3><i class="fas fa-key"></i> RentalHub</h3>
             <p>Property Management</p>
         </div>
+
+        
         <div class="sidebar-menu">
             <div class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}">
