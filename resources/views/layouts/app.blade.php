@@ -293,14 +293,14 @@
 
 
                <div class="sidebar-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
-                    <a href="{{ route('maintenances.index') }}">
+                    <a href="">
                         <i class="fas fa-tools"></i>
                         <span>Maintenance</span>
                     </a>
                 </div>
 
             <div class="sidebar-item">
-                <a href="#">
+                <a href="{{ route('reports.index') }}">
                     <i class="fas fa-chart-line"></i>
                     <span>Reports</span>
                 </a>

@@ -9,7 +9,4 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-Route::get('/maintenance', function () {
-    return view('maintenances.index');
-})->name('maintenances.index');
+Route::get('/reports', function () { return view('reports.index'); })->name('reports.index');
