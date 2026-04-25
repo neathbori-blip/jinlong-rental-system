@@ -73,10 +73,10 @@
                 <label><i class="fas fa-tag"></i> Status</label>
                 <select id="statusFilter" class="filter-select">
                     <option value="all">All Statuses</option>
-                    <option value="active">✅ Active</option>
-                    <option value="expiring">⚠️ Expiring Soon</option>
-                    <option value="expired">❌ Expired</option>
-                    <option value="terminated">🔚 Terminated</option>
+                    <option value="active"> Active</option>
+                    <option value="expiring"> Expiring Soon</option>
+                    <option value="expired"> Expired</option>
+                    <option value="terminated"> Terminated</option>
                 </select>
             </div>
             <div class="filter-group">
