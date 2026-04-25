@@ -10,6 +10,6 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/leases', function () {
-    return view('leases.index');
-})->name('leases.index');
+Route::get('/maintenance', function () {
+    return view('maintenances.index');
+})->name('maintenances.index');

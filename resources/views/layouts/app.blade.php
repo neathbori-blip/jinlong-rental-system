@@ -284,12 +284,20 @@
             </div>
 
                 <div class="sidebar-item {{ request()->routeIs('leases.*') ? 'active' : '' }}">
-                    <a href="{{ route('leases.index') }}">
+                    <a href="">
                         <i class="fas fa-file-signature"></i>
                         <span>Leases</span>
                     </a>
                 </div>
 
+
+
+               <div class="sidebar-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
+                    <a href="{{ route('maintenances.index') }}">
+                        <i class="fas fa-tools"></i>
+                        <span>Maintenance</span>
+                    </a>
+                </div>
 
             <div class="sidebar-item">
                 <a href="#">
