@@ -9,7 +9,7 @@
     <div class="page-header">
         <div>
             <h1><i class="fas fa-credit-card"></i> Payments Management</h1>
-            <p class="">Track, manage, and analyze all rental payments in one place</p>
+            <p>Track, manage, and analyze all rental payments in one place</p>
         </div>
         <button class="btn-add-payment" id="addPaymentBtn">
             <i class="fas fa-plus-circle"></i> Record New Payment
@@ -18,52 +18,49 @@
 
     <!-- Stats Cards -->
     <div class="stats-grid">
-     
-                <x-stat-card 
-                        title="Total Revenue"
-                        value="$48,920"
-                        trend="+12.5%"
-                        trendValue="from last month"
-                        :trendUp="true"
-                        icon="fa-dollar-sign"
-                        iconColor="blue"
-                />
+        <div class="stat-card">
+            <div class="stat-info">
+                <h4><i class="fas fa-dollar-sign"></i> Total Revenue</h4>
+                <div class="stat-number">$48,920</div>
+                <small><i class="fas fa-arrow-up"></i> +12.5% from last month</small>
+            </div>
+            <div class="stat-icon purple">
+                <i class="fas fa-chart-line"></i>
+            </div>
+        </div>
 
-                <x-stat-card 
-                        title="Pending Payments"
-                        value="$6,450"
-                        trend="8 unpaid invoices"
-                        :trendUp="false"
-                        icon="fa-hourglass-half"
-                        iconColor="orange"
-                        subtext="Awaiting payment"
-                />
+        <div class="stat-card">
+            <div class="stat-info">
+                <h4><i class="fas fa-hourglass-half"></i> Pending Payments</h4>
+                <div class="stat-number">$6,450</div>
+                <small><i class="fas fa-clock"></i> 8 unpaid invoices</small>
+            </div>
+            <div class="stat-icon orange">
+                <i class="fas fa-clock"></i>
+            </div>
+        </div>
 
-                <x-stat-card 
-                        title="Overdue"
-                        value="$2,340"
-                        trend="3 tenants overdue"
-                        :trendUp="false"
-                        icon="fa-exclamation-triangle"
-                        iconColor="red"
-                />
+        <div class="stat-card">
+            <div class="stat-info">
+                <h4><i class="fas fa-exclamation-triangle"></i> Overdue</h4>
+                <div class="stat-number">$2,340</div>
+                <small><i class="fas fa-calendar-times"></i> 3 tenants overdue</small>
+            </div>
+            <div class="stat-icon red">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
 
-                <x-stat-card 
-                        title="Collection Rate"
-                        value="87.5%"
-                        trend="+5.2%"
-                        trendValue="from last month"
-                        :trendUp="true"
-                        icon="fa-check-circle"
-                        iconColor="green"
-                        subtext="42/48 units paying"
-                />
-            
-
-                        
-
-
-     
+        <div class="stat-card">
+            <div class="stat-info">
+                <h4><i class="fas fa-check-circle"></i> Collection Rate</h4>
+                <div class="stat-number">87.5%</div>
+                <small><i class="fas fa-building"></i> 42/48 units paying</small>
+            </div>
+            <div class="stat-icon green">
+                <i class="fas fa-percent"></i>
+            </div>
+        </div>
     </div>
 
     <!-- Filters Section -->
@@ -83,9 +80,9 @@
                 <label><i class="fas fa-tag"></i> Status</label>
                 <select id="statusFilter" class="filter-select">
                     <option value="all">All Statuses</option>
-                    <option value="paid"><i class="line-md:confirm"></i> Paid</option>
-                    <option value="pending"><i class="fas fa-search"></i>  Pending</option>
-                    <option value="overdue"><i class="line-md:confirm"></i> Overdue</option>
+                    <option value="paid"> Paid</option>
+                    <option value="pending"> Pending</option>
+                    <option value="overdue"> Overdue</option>
                 </select>
             </div>
             <div class="filter-group">
@@ -110,7 +107,7 @@
         <div class="chart-container">
             <div class="card-header">
                 <h3><i class="fas fa-chart-line"></i> Monthly Revenue Trend</h3>
-                <span class="badge-year">2025</span>
+                <span class="badge-year">2026</span>
             </div>
             <canvas id="revenueChart" width="400" height="200"></canvas>
         </div>
@@ -139,7 +136,7 @@
                 </div>
                 <div class="summary-item due-alert">
                     <span><i class="fas fa-bell"></i> Next Rent Due</span>
-                    <strong>May 1, 2025</strong>
+                    <strong>May 1, 2026</strong>
                 </div>
             </div>
         </div>
@@ -591,8 +588,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-   
- 
+    // Payment Data
+  
+
+    let currentPage = 1;
+    let rowsPerPage = 8;
+    let currentFilters = {
+        search: '',
+        status: 'all',
+        month: 'all',
+        minAmount: ''
+    };
+
     function formatDate(dateStr) {
         if (!dateStr) return '-';
         const d = new Date(dateStr);
