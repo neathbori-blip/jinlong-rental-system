@@ -265,23 +265,32 @@
                 </a>
             </div>
             <div class="sidebar-item {{ request()->routeIs('properties.*') ? 'active' : '' }}">
-                <a href="{{ route('properties.index') }}">
+                <a href="">
                     <i class="fas fa-building"></i>
                     <span>Properties</span>
                 </a>
             </div>
             <div class="sidebar-item {{ request()->routeIs('tenants.*') ? 'active' : '' }}">
-                <a href="{{ route('tenants.index') }}">
+                <a href="">
                     <i class="fas fa-users"></i>
                     <span>Tenants</span>
                 </a>
             </div>
             <div class="sidebar-item {{ request()->routeIs('payments.*') ? 'active' : '' }}">
-                <a href="{{ route('payments.index') }}">
+                <a href="">
                     <i class="fas fa-money-bill-wave"></i>
                     <span>Payments</span>
                 </a>
             </div>
+
+                <div class="sidebar-item {{ request()->routeIs('leases.*') ? 'active' : '' }}">
+                    <a href="">
+                        <i class="fas fa-file-signature"></i>
+                        <span>Leases</span>
+                    </a>
+                </div>
+
+
             <div class="sidebar-item">
                 <a href="#">
                     <i class="fas fa-chart-line"></i>
