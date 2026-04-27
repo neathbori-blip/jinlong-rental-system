@@ -3,6 +3,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginController;
+
 
 Route::view('/dashboard', 'dashboard')->name('dashboard');
 
@@ -33,7 +35,9 @@ Route::post('/logout', function () {
     return redirect('/login');
 })->name('logout');
 
-// Home
+Route::get('/login', [LoginController::class, 'index']);
+
+
 Route::get('/', function () {
     return redirect()->route('dashboard');
 });
