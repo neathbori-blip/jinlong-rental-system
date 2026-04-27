@@ -4,234 +4,270 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Rental Dashboard - @yield('title')</title>
+    <title>Jinglong Rental</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            300: '#a5b4fc',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Custom scrollbar and additional styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f4f6f9;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 260px;
-            height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transition: all 0.3s;
-            z-index: 1000;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-        }
-
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-        }
-
-        .sidebar-header h3 {
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .sidebar-header p {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .sidebar-menu {
-            padding: 20px 0;
-        }
-
-        .sidebar-item {
-            padding: 12px 25px;
-            margin: 5px 0;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .sidebar-item:hover {
-            background: rgba(255,255,255,0.1);
-            padding-left: 30px;
-        }
-
-        .sidebar-item.active {
-            background: rgba(255,255,255,0.2);
-            border-left: 4px solid white;
-        }
-
-        .sidebar-item a {
-            color: white;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .sidebar-item i {
-            width: 20px;
-            font-size: 18px;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-left: 260px;
-            transition: all 0.3s;
-        }
-
-        /* Top Navbar */
-        .top-navbar {
-            background: white;
-            padding: 15px 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 24px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Content Area */
-        .content {
-            padding: 30px;
-        }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.3s;
         }
-
-        .stat-card:hover {
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .sidebar-transition {
+            transition: all 0.3s ease;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15);
+        }
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal-animation {
+            animation: modalSlideIn 0.3s ease;
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-100">
+    
+    <!-- Sidebar -->
+    <div class="sidebar fixed left-0 top-0 w-[260px] h-full bg-gradient-to-br from-purple-600 to-purple-800 text-white z-[1000] sidebar-transition" id="sidebar">
+        <div class="text-center py-6 px-5 border-b border-white/10">
+            <h3 class="text-2xl font-semibold">
+                <i class="fas fa-key mr-2"></i> Jing Long
+            </h3>
+            <p class="text-xs opacity-80 mt-1">Property Management</p>
+        </div>
+        
+        <div class="py-5">
+            <div class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('dashboard') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('dashboard') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-tachometer-alt w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('properties.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('properties.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('properties.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-building w-5"></i>
+                    <span>Properties</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('tenants.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('tenants.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('tenants.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-users w-5"></i>
+                    <span>Tenants</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('payments.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('payments.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('payments.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-money-bill-wave w-5"></i>
+                    <span>Payments</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('leases.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('leases.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('leases.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-file-signature w-5"></i>
+                    <span>Leases</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('maintenance.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('maintenance.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-tools w-5"></i>
+                    <span>Maintenance</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('reports.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('reports.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('reports.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-chart-line w-5"></i>
+                    <span>Reports</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item {{ request()->routeIs('settings.*') ? 'active' : '' }} px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer {{ request()->routeIs('settings.*') ? 'bg-white/20 border-l-4 border-white' : '' }}">
+                <a href="{{ route('settings.index') }}" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-cog w-5"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-item px-6 py-3 mx-0 my-1 transition-all duration-300 hover:bg-white/10 hover:pl-7 cursor-pointer">
+                <a href="javascript:void(0)" onclick="showLogoutModal()" class="text-white no-underline flex items-center gap-3">
+                    <i class="fas fa-sign-out-alt w-5"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="main-content ml-[260px] transition-all duration-300 max-md:ml-0" id="mainContent">
+        <!-- Top Navbar -->
+        <div class="bg-white px-8 py-4 shadow-sm flex justify-between items-center">
+            <div class="menu-toggle hidden text-2xl cursor-pointer max-md:block" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="user-info flex items-center gap-4">
+                <span>Welcome, {{ Auth::user()->name ?? 'Admin' }}</span>
+                <div class="user-avatar w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center text-white font-bold">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Area -->
+        <div class="p-8">
+            @yield('content')
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal hidden fixed top-0 left-0 w-full h-full bg-black/50 z-[9999] items-center justify-center">
+        <div class="modal-content bg-white rounded-2xl w-[90%] max-w-md overflow-hidden modal-animation">
+            <div class="modal-header bg-gradient-to-br from-purple-600 to-purple-800 text-white p-5 text-center">
+                <i class="fas fa-sign-out-alt text-5xl mb-2"></i>
+                <h3 class="text-xl font-semibold">Confirm Logout</h3>
+            </div>
+            <div class="modal-body p-8 text-center">
+                <p class="text-gray-800">Are you sure you want to logout?</p>
+                <p class="text-xs text-gray-500 mt-2">You will need to login again to access your account.</p>
+            </div>
+            <div class="modal-footer p-5 flex gap-3 justify-center border-t border-gray-200">
+                <button class="btn-cancel-logout bg-gray-100 text-gray-700 px-5 py-2 rounded-xl cursor-pointer font-medium hover:bg-gray-200 transition" id="cancelLogoutBtn">
+                    <i class="fas fa-times mr-1"></i> Cancel
+                </button>
+                <form method="POST" action="{{ route('logout') }}" id="logoutForm" class="inline">
+                    @csrf
+                    <button type="submit" class="btn-confirm-logout bg-red-500 text-white px-5 py-2 rounded-xl cursor-pointer font-medium hover:bg-red-600 transition">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Yes, Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar on mobile
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('-left-[260px]');
+                sidebar.classList.toggle('left-0');
+            });
         }
 
-        .stat-info h4 {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
+        // Logout modal functions
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.remove('hidden');
+            }
         }
 
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
+        function hideLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.add('hidden');
+            }
         }
 
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
+        // Close modal when clicking outside
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal) {
+            logoutModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideLogoutModal();
+                }
+            });
         }
 
-        /* Recent Items Table */
-        .recent-section {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        // Cancel button
+        const cancelBtn = document.getElementById('cancelLogoutBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', hideLogoutModal);
         }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
+        
+        // Handle responsive sidebar on window resize
+        function handleResponsive() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('-left-[260px]');
+                sidebar.classList.remove('left-0');
+                mainContent.style.marginLeft = '';
+            }
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .badge-active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .badge-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        /* Responsive */
+        
+        window.addEventListener('resize', handleResponsive);
+        handleResponsive();
+    </script>
+    
+    <!-- Additional Tailwind Utilities -->
+    <style>
         @media (max-width: 768px) {
             .sidebar {
                 left: -260px;
@@ -242,101 +278,12 @@
             .main-content {
                 margin-left: 0;
             }
-            .menu-toggle {
-                display: block;
-            }
+        }
+        
+        /* Re-create the sidebar transition for mobile */
+        .sidebar {
+            transition: left 0.3s ease;
         }
     </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h3><i class="fas fa-key"></i> RentalHub</h3>
-            <p>Property Management</p>
-        </div>
-
-        
-        <div class="sidebar-menu">
-            <div class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <a href="{{ route('dashboard') }}">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </div>
-            <div class="sidebar-item {{ request()->routeIs('properties.*') ? 'active' : '' }}">
-                <a href="">
-                    <i class="fas fa-building"></i>
-                    <span>Properties</span>
-                </a>
-            </div>
-            <div class="sidebar-item {{ request()->routeIs('tenants.*') ? 'active' : '' }}">
-                <a href="">
-                    <i class="fas fa-users"></i>
-                    <span>Tenants</span>
-                </a>
-            </div>
-            <div class="sidebar-item {{ request()->routeIs('payments.*') ? 'active' : '' }}">
-                <a href="">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span>Payments</span>
-                </a>
-            </div>
-
-                <div class="sidebar-item {{ request()->routeIs('leases.*') ? 'active' : '' }}">
-                    <a href="">
-                        <i class="fas fa-file-signature"></i>
-                        <span>Leases</span>
-                    </a>
-                </div>
-
-
-
-               <div class="sidebar-item {{ request()->routeIs('maintenance.*') ? 'active' : '' }}">
-                    <a href="">
-                        <i class="fas fa-tools"></i>
-                        <span>Maintenance</span>
-                    </a>
-                </div>
-
-            <div class="sidebar-item">
-                <a href="">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Reports</span>
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="{{ route('settings.index') }}">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="top-navbar">
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <div class="user-info">
-                <span>Welcome, Admin</span>
-                <div class="user-avatar">
-                    <i class="fas fa-user"></i>
-                </div>
-            </div>
-        </div>
-        <div class="content">
-            @yield('content')
-        </div>
-    </div>
-
-    <script>
-        // Toggle sidebar on mobile
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
-    </script>
 </body>
 </html>
