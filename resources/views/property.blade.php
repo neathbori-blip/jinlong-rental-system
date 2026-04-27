@@ -198,7 +198,11 @@ e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</
                                 <small>{{ $property->bedrooms }} Beds</small>
                             </div>
                             <div class="col-4">
+<<<<<<< HEAD
 <i class="fas fa-bath feature-icon"></i>
+=======
+                                <i class="fas fa-bath feature-icon"></i>
+>>>>>>> d3dd5d16ad4e22962316365129ff9e3d1ac0e788
                                 <small>{{ $property->bathrooms }} Baths</small>
                             </div>
                             <div class="col-4">
@@ -279,8 +283,12 @@ e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</
                             <input type="number" name="bedrooms" class="form-control" required>
                         </div>
                         <div class="col-md-6 mb-3">
+<<<<<<< HEAD
                             <label
 class="form-label">Bathrooms *</label>
+=======
+                            <label class="form-label">Bathrooms *</label>
+>>>>>>> d3dd5d16ad4e22962316365129ff9e3d1ac0e788
                             <input type="number" name="bathrooms" class="form-control" required>
                         </div>
                         <div class="col-md-6 mb-3">
