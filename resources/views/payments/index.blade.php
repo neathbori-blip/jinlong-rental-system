@@ -227,20 +227,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
     // Payment Data
-    const payments = [
-        { id: "INV-1001", tenant: "Emily Clarke", property: "Sunset Apartments #4B", amount: 1850, dueDate: "2025-04-01", paidDate: "2025-03-28", status: "paid", method: "Bank Transfer" },
-        { id: "INV-1002", tenant: "James Wilson", property: "Maple Grove #12", amount: 2200, dueDate: "2025-04-03", paidDate: "2025-04-01", status: "paid", method: "Credit Card" },
-        { id: "INV-1003", tenant: "Sophia Martinez", property: "Harbor Loft #7", amount: 1750, dueDate: "2025-04-05", paidDate: "", status: "pending", method: "-" },
-        { id: "INV-1004", tenant: "Liam Johnson", property: "Oakwood Residence #2", amount: 1950, dueDate: "2025-03-28", paidDate: "", status: "overdue", method: "-" },
-        { id: "INV-1005", tenant: "Olivia Brown", property: "Pine Hill #9", amount: 2100, dueDate: "2025-04-02", paidDate: "2025-03-30", status: "paid", method: "Cash" },
-        { id: "INV-1006", tenant: "Noah Davis", property: "Cedar Creek #15", amount: 1650, dueDate: "2025-04-10", paidDate: "", status: "pending", method: "-" },
-        { id: "INV-1007", tenant: "Ava Garcia", property: "Downtown Suites #3", amount: 2400, dueDate: "2025-03-20", paidDate: "", status: "overdue", method: "-" },
-        { id: "INV-1008", tenant: "Mason Rodriguez", property: "Lakeside Villas #8", amount: 1890, dueDate: "2025-04-08", paidDate: "2025-04-05", status: "paid", method: "Bank Transfer" },
-        { id: "INV-1009", tenant: "Isabella Miller", property: "West End #22", amount: 1725, dueDate: "2025-03-25", paidDate: "", status: "overdue", method: "-" },
-        { id: "INV-1010", tenant: "Ethan Martinez", property: "Hillcrest #5", amount: 1980, dueDate: "2025-04-12", paidDate: "", status: "pending", method: "-" },
-        { id: "INV-1011", tenant: "Charlotte Wilson", property: "Riverfront #11", amount: 2300, dueDate: "2025-04-15", paidDate: "2025-04-10", status: "paid", method: "Credit Card" },
-        { id: "INV-1012", tenant: "Benjamin Lee", property: "Golden Gate #6", amount: 1675, dueDate: "2025-04-18", paidDate: "", status: "pending", method: "-" }
-    ];
+  
 
     let currentPage = 1;
     let rowsPerPage = 8;

@@ -115,17 +115,17 @@
         :showPriority="true"
         :showProperty="true"
         :statusOptions="[
-            'open' => '🆕 Open',
-            'in-progress' => '⚙️ In Progress',
-            'review' => '🔍 Under Review',
-            'completed' => '✅ Completed',
-            'cancelled' => '❌ Cancelled'
+            'open' => ' Open',
+            'in-progress' => ' In Progress',
+            'review' => ' Under Review',
+            'completed' => ' Completed',
+            'cancelled' => 'Cancelled'
         ]"
         :priorityOptions="[
-            'urgent' => '🔴 Urgent',
-            'high' => '🟠 High',
-            'medium' => '🟡 Medium',
-            'low' => '🟢 Low'
+            'urgent' => 'Urgent',
+            'high' => ' High',
+            'medium' => ' Medium',
+            'low' => 'Low'
         ]"
         :propertyOptions="[
             'sunset' => 'Sunset Apartments',
@@ -393,21 +393,21 @@
 
     function getPriorityBadge(priority) {
         const badges = {
-            'urgent': '<span class="priority-urgent">🔴 Urgent</span>',
-            'high': '<span class="priority-high">🟠 High</span>',
-            'medium': '<span class="priority-medium">🟡 Medium</span>',
-            'low': '<span class="priority-low">🟢 Low</span>'
+            'urgent': '<span class="priority-urgent">Urgent</span>',
+            'high': '<span class="priority-high"> High</span>',
+            'medium': '<span class="priority-medium">Medium</span>',
+            'low': '<span class="priority-low"> Low</span>'
         };
         return badges[priority] || badges.medium;
     }
 
     function getStatusBadge(status) {
         const badges = {
-            'open': '<span class="badge badge-open">🆕 Open</span>',
-            'in-progress': '<span class="badge badge-progress">⚙️ In Progress</span>',
-            'review': '<span class="badge badge-review">🔍 Under Review</span>',
-            'completed': '<span class="badge badge-completed">✅ Completed</span>',
-            'cancelled': '<span class="badge badge-cancelled">❌ Cancelled</span>'
+            'open': '<span class="badge badge-open"> Open</span>',
+            'in-progress': '<span class="badge badge-progress"> In Progress</span>',
+            'review': '<span class="badge badge-review"> Under Review</span>',
+            'completed': '<span class="badge badge-completed"> Completed</span>',
+            'cancelled': '<span class="badge badge-cancelled"> Cancelled</span>'
         };
         return badges[status] || badges.open;
     }
@@ -446,29 +446,7 @@
         
         const tbody = document.getElementById('maintenanceTableBody');
         
-        if (pageData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px;">No maintenance requests found</td></tr>';
-        } else {
-            tbody.innerHTML = pageData.map(request => `
-                <tr>
-                    <td class="px-4 py-3.5"><input type="checkbox" class="request-checkbox" data-id="${request.id}"></td>
-                    <td class="px-4 py-3.5"><strong>${request.id}</strong></td>
-                    <td class="px-4 py-3.5">${request.property} ${request.unit}</td>
-                    <td class="px-4 py-3.5"><i class="fas fa-user-circle text-purple-600 mr-2"></i>${request.tenant}</td>
-                    <td class="px-4 py-3.5">${request.type}</td>
-                    <td class="px-4 py-3.5">${getPriorityBadge(request.priority)}</td>
-                    <td class="px-4 py-3.5">${formatDate(request.reportedDate)}</td>
-                    <td class="px-4 py-3.5">${request.assignedTo}</td>
-                    <td class="px-4 py-3.5">${getStatusBadge(request.status)}</td>
-                    <td class="px-4 py-3.5 action-buttons">
-                        <i class="fas fa-eye" title="View Details" onclick="viewRequest('${request.id}')"></i>
-                        <i class="fas fa-user-check" title="Assign" onclick="assignRequest('${request.id}')"></i>
-                        <i class="fas fa-check-circle" title="Mark Complete" onclick="completeRequest('${request.id}')"></i>
-                        <i class="fas fa-edit" title="Edit" onclick="editRequest('${request.id}')"></i>
-                    </td>
-                </tr>
-            `).join('');
-        }
+       
         
         document.getElementById('showingInfo').innerHTML = `Showing ${start+1} to ${Math.min(end, filtered.length)} of ${filtered.length} requests`;
         renderPagination(totalPages);

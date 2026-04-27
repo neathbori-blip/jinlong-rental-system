@@ -318,30 +318,7 @@
         
         const tbody = document.getElementById('leasesTableBody');
         
-        if (pageData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px;">No leases found</td></tr>';
-        } else {
-            tbody.innerHTML = pageData.map(lease => `
-                <tr>
-                    <td class="px-4 py-3.5"><input type="checkbox" class="lease-checkbox" data-id="${lease.id}" class="w-4 h-4"></td>
-                    <td class="px-4 py-3.5"><strong>${lease.id}</strong></td>
-                    <td class="px-4 py-3.5"><i class="fas fa-user-circle text-purple-600 mr-2"></i>${lease.tenant}</td>
-                    <td class="px-4 py-3.5"><i class="fas fa-building mr-2 text-slate-400"></i> ${lease.property}</td>
-                    <td class="px-4 py-3.5">${lease.unit}</td>
-                    <td class="px-4 py-3.5">${formatDate(lease.startDate)}</td>
-                    <td class="px-4 py-3.5">${formatDate(lease.endDate)}</td>
-                    <td class="px-4 py-3.5"><strong>${formatAmount(lease.rent)}</strong></td>
-                    <td class="px-4 py-3.5">${getStatusBadge(lease.status)}</td>
-                    <td class="px-4 py-3.5 action-buttons">
-                        <i class="fas fa-eye" title="View Details" onclick="viewLease('${lease.id}')"></i>
-                        <i class="fas fa-file-pdf" title="Download PDF" onclick="downloadLease('${lease.id}')"></i>
-                        <i class="fas fa-sync-alt" title="Renew" onclick="renewLease('${lease.id}')"></i>
-                        <i class="fas fa-edit" title="Edit" onclick="editLease('${lease.id}')"></i>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
+    
         document.getElementById('showingInfo').innerHTML = `Showing ${start+1} to ${Math.min(end, filtered.length)} of ${filtered.length} leases`;
         renderPagination(totalPages);
     }

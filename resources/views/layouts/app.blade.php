@@ -164,18 +164,205 @@
    
     <div class="main-content ml-[260px] transition-all duration-300 max-md:ml-0" id="mainContent">
         <!-- Top Navbar -->
-        <div class="bg-white px-8 py-4 shadow-sm flex justify-between items-center">
-            <div class="menu-toggle hidden text-2xl cursor-pointer max-md:block" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
-            <div class="user-info flex items-center gap-4">
-                <span>Welcome, {{ Auth::user()->name ?? 'Admin' }}</span>
-                <div class="user-avatar w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-full flex items-center justify-center text-white font-bold">
-                    <i class="fas fa-user"></i>
+     <div class="bg-white px-6 py-3 shadow-md flex justify-between items-center border-b border-slate-100">
+    <!-- Left side - Menu Toggle (Mobile) -->
+    <div class="flex items-center gap-4">
+        <div class="menu-toggle hidden text-2xl cursor-pointer max-md:block text-slate-600 hover:text-purple-600 transition" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        
+        <!-- Breadcrumb / Page Title (Optional) -->
+        <div class="hidden md:block">
+            <h2 class="text-lg font-semibold text-slate-800">
+                @yield('page-title', 'Dashboard')
+            </h2>
+            <p class="text-xs text-slate-500">@yield('page-subtitle', 'Welcome back!')</p>
+        </div>
+    </div>
+
+    <!-- Right side - User Actions -->
+    <div class="flex items-center gap-6">
+    
+
+        <!-- Notification Bell -->
+        <div class="relative">
+            <button id="notificationBtn" class="relative text-slate-600 hover:text-purple-600 transition">
+                <i class="far fa-bell text-xl"></i>
+                <span class="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] rounded-full px-1.5 py-0.5 min-w-[18px] text-center">3</span>
+            </button>
+            
+            <!-- Notification Dropdown -->
+            <div id="notificationDropdown" class="hidden absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl border border-slate-100 z-50">
+                <div class="p-4 border-b border-slate-100">
+                    <h3 class="font-semibold text-slate-800">Notifications</h3>
+                    <p class="text-xs text-slate-500">You have 3 unread notifications</p>
+                </div>
+                <div class="max-h-96 overflow-y-auto">
+                    <div class="p-3 hover:bg-slate-50 transition cursor-pointer border-b border-slate-50">
+                        <div class="flex gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-slate-800">Payment Received</p>
+                                <p class="text-xs text-slate-500">$1,850 from Emily Clarke</p>
+                                <p class="text-xs text-slate-400 mt-1">2 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 hover:bg-slate-50 transition cursor-pointer border-b border-slate-50">
+                        <div class="flex gap-3">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600">
+                                <i class="fas fa-tools"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-slate-800">Maintenance Request</p>
+                                <p class="text-xs text-slate-500">Water leak at Sunset #4B</p>
+                                <p class="text-xs text-slate-400 mt-1">5 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 hover:bg-slate-50 transition cursor-pointer">
+                        <div class="flex gap-3">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-slate-800">Lease Expiring Soon</p>
+                                <p class="text-xs text-slate-500">James Wilson's lease ends in 30 days</p>
+                                <p class="text-xs text-slate-400 mt-1">1 day ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 border-t border-slate-100">
+                    <button class="w-full text-center text-sm text-purple-600 hover:text-purple-700 font-medium">View All Notifications</button>
                 </div>
             </div>
         </div>
-        
+
+      
+
+        <!-- User Profile Dropdown -->
+        <div class="relative">
+            <button id="userMenuBtn" class="flex items-center gap-3 hover:bg-slate-50 rounded-xl px-3 py-2 transition">
+                <!-- User Avatar with Image Support -->
+                <div class="relative">
+                    @php
+                        $userAvatar = Auth::user()->avatar ?? null;
+                        $userName = Auth::user()->name ?? 'Admin';
+                        $initials = strtoupper(substr($userName, 0, 2));
+                    @endphp
+                    
+                    @if($userAvatar)
+                        <img src="{{ asset('storage/' . $userAvatar) }}" alt="{{ $userName }}" class="w-10 h-10 rounded-full object-cover border-2 border-purple-200">
+                    @else
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center text-white font-bold text-sm">
+                            {{ $initials }}
+                        </div>
+                    @endif
+                    
+                    <!-- Online Status Indicator -->
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                </div>
+                
+                <div class="hidden md:block text-left">
+                    <p class="text-sm font-semibold text-slate-800">{{ $userName }}</p>
+                    <p class="text-xs text-slate-500">Administrator</p>
+                </div>
+                
+                <i class="fas fa-chevron-down hidden md:block text-slate-400 text-xs transition-transform duration-200" id="dropdownArrow"></i>
+            </button>
+            
+            <!-- User Dropdown Menu -->
+            <div id="userDropdown" class="hidden absolute right-0 mt-3 w-72 bg-white rounded-2xl shadow-xl border border-slate-100 z-50">
+                <!-- User Info Header -->
+                <div class="p-4 border-b border-slate-100 flex items-center gap-3">
+                    @if($userAvatar)
+                        <img src="{{ asset('storage/' . $userAvatar) }}" alt="{{ $userName }}" class="w-12 h-12 rounded-full object-cover">
+                    @else
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-purple-800 flex items-center justify-center text-white font-bold text-lg">
+                            {{ $initials }}
+                        </div>
+                    @endif
+                    <div>
+                        <p class="font-semibold text-slate-800">{{ $userName }}</p>
+                        <p class="text-xs text-slate-500">{{ Auth::user()->email ?? 'admin@example.com' }}</p>
+                    </div>
+                </div>
+                
+                <!-- Menu Items -->
+                <div class="py-2">
+                    <a href="" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition">
+                        <i class="fas fa-user-circle w-5 text-slate-400"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="{{ route('settings.index') }}" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition">
+                        <i class="fas fa-cog w-5 text-slate-400"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="" class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition">
+                        <i class="fas fa-chart-line w-5 text-slate-400"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <div class="border-t border-slate-100 my-2"></div>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition" onclick="showLogoutModal()">
+                        <i class="fas fa-sign-out-alt w-5"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dropdown JavaScript -->
+<script>
+    // User Dropdown Toggle
+    const userMenuBtn = document.getElementById('userMenuBtn');
+    const userDropdown = document.getElementById('userDropdown');
+    const dropdownArrow = document.getElementById('dropdownArrow');
+    
+    if (userMenuBtn) {
+        userMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userDropdown.classList.toggle('hidden');
+            if (dropdownArrow) {
+                dropdownArrow.style.transform = userDropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+        });
+    }
+    
+    // Notification Dropdown Toggle
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationDropdown = document.getElementById('notificationDropdown');
+    
+    if (notificationBtn) {
+        notificationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle('hidden');
+        });
+    }
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+        if (userDropdown && !userDropdown.classList.contains('hidden')) {
+            userDropdown.classList.add('hidden');
+            if (dropdownArrow) dropdownArrow.style.transform = 'rotate(0deg)';
+        }
+        if (notificationDropdown && !notificationDropdown.classList.contains('hidden')) {
+            notificationDropdown.classList.add('hidden');
+        }
+    });
+    
+    // Prevent dropdown from closing when clicking inside
+    if (userDropdown) {
+        userDropdown.addEventListener('click', (e) => e.stopPropagation());
+    }
+    if (notificationDropdown) {
+        notificationDropdown.addEventListener('click', (e) => e.stopPropagation());
+    }
+</script>
         <!-- Content Area -->
         <div class="p-8">
             @yield('content')

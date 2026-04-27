@@ -67,9 +67,9 @@
         :showStatus="true"
         :showProperty="true"
         :statusOptions="[
-            'active' => '✅ Active',
-            'pending' => '⏳ Pending',
-            'inactive' => '❌ Inactive'
+            'active' => ' Active',
+            'pending' => ' Pending',
+            'inactive' => ' Inactive'
         ]"
         :propertyOptions="[
             'sunset' => 'Sunset Apartments',
@@ -95,17 +95,7 @@
     <div class="bg-white rounded-2xl overflow-hidden border border-slate-100">
         <div class="flex justify-between items-center p-5 border-b border-slate-100 flex-wrap gap-3">
             <h3 class="text-slate-800 font-bold"><i class="fas fa-users mr-2"></i> All Tenants</h3>
-            <div class="flex gap-3">
-                <x-button variant="secondary" size="sm" icon="download" id="exportBtn">
-                    Export CSV
-                </x-button>
-                <x-button variant="secondary" size="sm" icon="print" id="printBtn">
-                    Print
-                </x-button>
-                <x-button variant="primary" size="sm" icon="envelope" id="bulkMessageBtn">
-                    Send Message
-                </x-button>
-            </div>
+         
         </div>
         
         <div class="overflow-x-auto">
@@ -272,29 +262,7 @@ function renderTable() {
     const start = (currentPage - 1) * rowsPerPage;
     const pageData = filtered.slice(start, start + rowsPerPage);
     const tbody = document.getElementById('tenantsTableBody');
-    
-    if (pageData.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px;">No tenants found</td></tr>';
-    } else {
-        tbody.innerHTML = pageData.map(tenant => `
-            <tr>
-                <td class="px-4 py-3.5"><input type="checkbox" class="tenant-checkbox" data-id="${tenant.id}" class="w-4 h-4"></td>
-                <td class="px-4 py-3.5"><strong>${tenant.id}</strong></td>
-                <td class="px-4 py-3.5"><i class="fas fa-user-circle text-purple-600 mr-2"></i>${tenant.name}</td>
-                <td class="px-4 py-3.5"><small>${tenant.email}<br>${tenant.phone}</small></td>
-                <td class="px-4 py-3.5">${tenant.property}</td>
-                <td class="px-4 py-3.5">${tenant.unit}</td>
-                <td class="px-4 py-3.5"><strong>${formatAmount(tenant.rent)}</strong></td>
-                <td class="px-4 py-3.5">${formatDate(tenant.leaseEnd)}</td>
-                <td class="px-4 py-3.5">${getStatusBadge(tenant.status)}</td>
-                <td class="px-4 py-3.5 action-buttons">
-                    <i class="fas fa-eye" title="View Details" onclick="viewTenant('${tenant.id}')"></i>
-                    <i class="fas fa-edit" title="Edit" onclick="editTenant('${tenant.id}')"></i>
-                    <i class="fas fa-envelope" title="Message" onclick="messageTenant('${tenant.id}')"></i>
-                </td>
-            </tr>
-        `).join('');
-    }
+  
     
     document.getElementById('showingInfo').innerHTML = `Showing ${start+1} to ${Math.min(start+rowsPerPage, filtered.length)} of ${filtered.length} tenants`;
     renderPagination(totalPages);
