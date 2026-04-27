@@ -300,13 +300,13 @@
                 </div>
 
             <div class="sidebar-item">
-                <a href="{{ route('reports.index') }}">
+                <a href="">
                     <i class="fas fa-chart-line"></i>
                     <span>Reports</span>
                 </a>
             </div>
             <div class="sidebar-item">
-                <a href="#">
+                <a href="{{ route('settings.index') }}">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>

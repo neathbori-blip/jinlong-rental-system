@@ -9,4 +9,4 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/reports', function () { return view('reports.index'); })->name('reports.index');
+Route::get('/settings', function () { return view('settings.index'); })->name('settings.index');
