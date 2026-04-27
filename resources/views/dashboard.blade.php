@@ -118,76 +118,7 @@
     </div>
 
     <!-- Recent Activity & Alerts Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Recent Payments -->
-        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-            <div class="flex justify-between items-center p-5 border-b border-slate-100">
-                <h3 class="text-slate-800 font-bold"><i class="fas fa-receipt text-purple-600 mr-2"></i> Recent Payments</h3>
-                <a href="{{ route('payments.index') }}" class="text-purple-600 text-sm hover:underline">View All →</a>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-slate-50">
-                        <tr>
-                            <th class="px-5 py-3 text-left text-xs font-semibold text-slate-600">Tenant</th>
-                            <th class="px-5 py-3 text-left text-xs font-semibold text-slate-600">Amount</th>
-                            <th class="px-5 py-3 text-left text-xs font-semibold text-slate-600">Date</th>
-                            <th class="px-5 py-3 text-left text-xs font-semibold text-slate-600">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recentPayments">
-                        <!-- Dynamic content -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
-        <!-- Upcoming Maintenance -->
-        <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-            <div class="flex justify-between items-center p-5 border-b border-slate-100">
-                <h3 class="text-slate-800 font-bold"><i class="fas fa-tools text-purple-600 mr-2"></i> Pending Maintenance</h3>
-                <a href="{{ route('maintenance.index') }}" class="text-purple-600 text-sm hover:underline">View All →</a>
-            </div>
-            <div class="divide-y divide-slate-100">
-                <div class="p-4 hover:bg-slate-50 transition cursor-pointer">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="font-semibold text-slate-800">Water Leak - Unit #4B</p>
-                            <p class="text-xs text-slate-500 mt-1">Sunset Apartments • Reported 2h ago</p>
-                        </div>
-                        <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">Urgent</span>
-                    </div>
-                </div>
-                <div class="p-4 hover:bg-slate-50 transition cursor-pointer">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="font-semibold text-slate-800">AC Not Working - Unit #7</p>
-                            <p class="text-xs text-slate-500 mt-1">Harbor Loft • Reported 5h ago</p>
-                        </div>
-                        <span class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full">High</span>
-                    </div>
-                </div>
-                <div class="p-4 hover:bg-slate-50 transition cursor-pointer">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="font-semibold text-slate-800">Electrical Outlet - Unit #12</p>
-                            <p class="text-xs text-slate-500 mt-1">Maple Grove • Reported 1d ago</p>
-                        </div>
-                        <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">Medium</span>
-                    </div>
-                </div>
-                <div class="p-4 hover:bg-slate-50 transition cursor-pointer">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="font-semibold text-slate-800">Dishwasher Broken - Unit #9</p>
-                            <p class="text-xs text-slate-500 mt-1">Pine Hill • Reported 2d ago</p>
-                        </div>
-                        <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Low</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Expiring Leases Section -->
     <div class="mt-8 bg-white rounded-2xl border border-slate-100 overflow-hidden">

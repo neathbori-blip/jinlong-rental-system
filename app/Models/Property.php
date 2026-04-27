@@ -6,15 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
 {
-    protected $fillable = ['name', 'location', 'price', 'status', 'description', 'bedrooms', 'bathrooms'];
-    
-    public function tenant()
-    {
-        return $this->hasOne(Tenant::class);
-    }
-    
-    public function payments()
-    {
-        return $this->hasMany(Payment::class);
-    }
+    protected $fillable = [
+        'name', 'address', 'total_units', 'occupied_units', 'monthly_revenue'
+    ];
+
+    public function leases()
+{
+    return $this->hasMany(Lease::class);
+}
 }

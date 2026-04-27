@@ -1,10 +1,9 @@
-{{-- resources/views/tenants/index.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Tenants Management')
 
 @section('content')
-<div class="max-w-[1400px] mx-auto">
+<div class="max-w-[1400px] mx-auto px-4 py-6">
     <!-- Page Header -->
     <div class="flex justify-between items-center mb-8 flex-wrap gap-4">
         <div>
@@ -13,308 +12,169 @@
             </h1>
             <p class="text-slate-500 text-sm">Manage all tenants, leases, and payment history in one place</p>
         </div>
-        
-        {{-- Using Button Component --}}
-        <x-button variant="primary" size="lg" icon="user-plus" id="addTenantBtn">
-            Add New Tenant
-        </x-button>
+        <a href="{{ route('tenants.create') }}" class="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-6 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-md hover:shadow-lg transition">
+            <i class="fas fa-user-plus"></i> Add New Tenant
+        </a>
     </div>
 
-    {{-- Stats Cards using Component --}}
+    <!-- Stats Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <x-stat-card 
-            title="Total Tenants" 
-            value="42" 
-            icon="users"
-            iconColor="purple"
-            trend="+5 this month"
-            :trendUp="true"
-        />
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 hover:shadow-md transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-500 text-sm">Total Tenants</p>
+                    <p class="text-2xl font-bold text-slate-800">{{ $totalTenants ?? $tenants->total() }}</p>
+                </div>
+                <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-users text-purple-600"></i>
+                </div>
+            </div>
+            <span class="text-xs text-green-600 mt-2 inline-block"><i class="fas fa-arrow-up"></i> +5 this month</span>
+        </div>
 
-        <x-stat-card 
-            title="Active Leases" 
-            value="38" 
-            icon="home"
-            iconColor="green"
-            trend="90% occupancy"
-            :trendUp="true"
-        />
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 hover:shadow-md transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-500 text-sm">Active Leases</p>
+                    <p class="text-2xl font-bold text-slate-800">{{ $activeLeases ?? $tenants->where('status','active')->count() }}</p>
+                </div>
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-home text-green-600"></i>
+                </div>
+            </div>
+            <span class="text-xs text-green-600 mt-2 inline-block"><i class="fas fa-chart-line"></i> 90% occupancy</span>
+        </div>
 
-        <x-stat-card 
-            title="Pending Payments" 
-            value="8" 
-            icon="clock"
-            iconColor="orange"
-            trend="$6,450 total"
-            :trendUp="false"
-        />
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 hover:shadow-md transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-500 text-sm">Pending Payments</p>
+                    <p class="text-2xl font-bold text-slate-800">{{ $pendingPayments ?? 0 }}</p>
+                </div>
+                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-clock text-orange-600"></i>
+                </div>
+            </div>
+            <span class="text-xs text-red-600 mt-2 inline-block"><i class="fas fa-exclamation-triangle"></i> $6,450 total</span>
+        </div>
 
-        <x-stat-card 
-            title="Avg. Rent" 
-            value="$1,850" 
-            icon="dollar-sign"
-            iconColor="blue"
-            trend="+5.2% YoY"
-            :trendUp="true"
-        />
+        <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100 hover:shadow-md transition">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-500 text-sm">Avg. Rent</p>
+                    <p class="text-2xl font-bold text-slate-800">${{ number_format($avgRent ?? 0, 0) }}</p>
+                </div>
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="fas fa-dollar-sign text-blue-600"></i>
+                </div>
+            </div>
+            <span class="text-xs text-green-600 mt-2 inline-block"><i class="fas fa-arrow-up"></i> +5.2% YoY</span>
+        </div>
     </div>
 
-    {{-- Filter Component with Custom Filter for Lease Status --}}
-    <x-filter-card 
-        title="Filter Tenants"
-        searchPlaceholder="Name, email, phone..."
-        searchField="searchInput"
-        :showStatus="true"
-        :showProperty="true"
-        :statusOptions="[
-            'active' => ' Active',
-            'pending' => ' Pending',
-            'inactive' => ' Inactive'
-        ]"
-        :propertyOptions="[
-            'sunset' => 'Sunset Apartments',
-            'maple' => 'Maple Grove',
-            'harbor' => 'Harbor Loft',
-            'oakwood' => 'Oakwood Residence'
-        ]"
-        :customFilters="[
-            [
-                'id' => 'leaseFilter',
-                'label' => 'Lease Status',
-                'icon' => 'fa-calendar',
-                'options' => [
-                    'active' => 'Active Lease',
-                    'expiring' => 'Expiring Soon',
-                    'expired' => 'Expired'
-                ]
-            ]
-        ]"
-    />
+    @if(session('success'))
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm">
+            <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+        </div>
+    @endif
 
-    <!-- Tenants Table -->
-    <div class="bg-white rounded-2xl overflow-hidden border border-slate-100">
-        <div class="flex justify-between items-center p-5 border-b border-slate-100 flex-wrap gap-3">
-            <h3 class="text-slate-800 font-bold"><i class="fas fa-users mr-2"></i> All Tenants</h3>
-         
+    <!-- Tenant Cards Grid (Better for modern look) -->
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold text-slate-700"><i class="fas fa-id-card mr-2"></i> All Tenants</h2>
+        <div class="text-sm text-slate-500">Showing {{ $tenants->firstItem() ?? 0 }} to {{ $tenants->lastItem() ?? 0 }} of {{ $tenants->total() }} tenants</div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @forelse($tenants as $tenant)
+        <div class="bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden hover:shadow-xl transition duration-300">
+            <!-- Tenant Header -->
+            <div class="bg-gradient-to-r from-purple-50 to-purple-100 px-5 py-4 border-b">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                            {{ strtoupper(substr($tenant->name, 0, 1)) }}
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800">{{ $tenant->name }}</h3>
+                            <p class="text-xs text-slate-500">ID: #{{ $tenant->id }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        @if($tenant->status == 'active')
+                            <span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full"><i class="fas fa-check-circle"></i> Active</span>
+                        @elseif($tenant->status == 'pending')
+                            <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full"><i class="fas fa-clock"></i> Pending</span>
+                        @else
+                            <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full"><i class="fas fa-ban"></i> Inactive</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tenant Details -->
+            <div class="p-5 space-y-3">
+                <div class="flex items-center text-sm">
+                    <i class="fas fa-envelope text-slate-400 w-5"></i>
+                    <span class="text-slate-600 ml-2">{{ $tenant->email }}</span>
+                </div>
+                <div class="flex items-center text-sm">
+                    <i class="fas fa-phone text-slate-400 w-5"></i>
+                    <span class="text-slate-600 ml-2">{{ $tenant->phone }}</span>
+                </div>
+                <div class="flex items-center text-sm">
+                    <i class="fas fa-building text-slate-400 w-5"></i>
+                    <span class="text-slate-600 ml-2">{{ $tenant->property->name }} <span class="text-slate-400">• Unit {{ $tenant->unit_number }}</span></span>
+                </div>
+                <div class="flex items-center text-sm">
+                    <i class="fas fa-dollar-sign text-slate-400 w-5"></i>
+                    <span class="text-slate-600 ml-2 font-semibold">{{ $tenant->formatted_rent }}</span>
+                    <span class="text-slate-400 text-xs ml-1">/ month</span>
+                </div>
+                <div class="flex items-center text-sm">
+                    <i class="fas fa-calendar-alt text-slate-400 w-5"></i>
+                    <span class="text-slate-600 ml-2">Lease ends: {{ $tenant->lease_end->format('M d, Y') }}</span>
+                    @if($tenant->lease_end->isPast())
+                        <span class="ml-2 text-red-500 text-xs"><i class="fas fa-exclamation-circle"></i> Expired</span>
+                    @elseif($tenant->lease_end->diffInDays(now()) <= 30)
+                        <span class="ml-2 text-orange-500 text-xs"><i class="fas fa-hourglass-half"></i> Soon</span>
+                    @endif
+                </div>
+                <div class="flex items-center text-sm">
+                    <i class="fas fa-calendar-check text-slate-400 w-5"></i>
+                    <span class="text-slate-600 ml-2">Move in: {{ $tenant->move_in_date->format('M d, Y') }}</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="px-5 py-3 bg-slate-50 border-t flex justify-between items-center">
+                <div class="flex gap-2">
+                    <a href="{{ route('tenants.show', $tenant) }}" class="text-blue-600 hover:text-blue-800 transition" title="View">
+                        <i class="fas fa-eye"></i> Details
+                    </a>
+                    <a href="{{ route('tenants.edit', $tenant) }}" class="text-yellow-600 hover:text-yellow-800 transition" title="Edit">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                </div>
+                <form action="{{ route('tenants.destroy', $tenant) }}" method="POST" onsubmit="return confirm('Delete this tenant?')" class="inline">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="text-red-600 hover:text-red-800 transition" title="Delete">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </button>
+                </form>
+            </div>
         </div>
-        
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse">
-                <thead>
-                    <tr class="bg-slate-50">
-                        <th class="px-4 py-3.5 text-left"><input type="checkbox" id="selectAll" class="w-4 h-4 cursor-pointer"></th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">ID</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Tenant</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Contact</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Property</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Unit</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Monthly Rent</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Lease End</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Status</th>
-                        <th class="px-4 py-3.5 text-left text-slate-600 font-semibold text-xs">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="tenantsTableBody">
-                    <!-- Dynamic rows will appear here -->
-                </tbody>
-            </table>
+        @empty
+        <div class="col-span-full text-center py-12 bg-white rounded-xl shadow">
+            <i class="fas fa-user-slash text-5xl text-slate-300 mb-3"></i>
+            <p class="text-slate-500">No tenants found.</p>
+            <a href="{{ route('tenants.create') }}" class="text-purple-600 hover:underline mt-2 inline-block">Add your first tenant</a>
         </div>
-        
-        <div class="flex justify-between items-center p-5 border-t border-slate-100 flex-wrap gap-3">
-            <div class="text-sm text-slate-500" id="showingInfo">Showing 0 of 0 entries</div>
-            <div class="flex gap-2" id="pagination"></div>
-        </div>
+        @endforelse
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-8 flex justify-center">
+        {{ $tenants->links() }}
     </div>
 </div>
-
-<!-- Tenant Details Modal -->
-<div id="tenantModal" class="modal hidden fixed top-0 left-0 w-full h-full bg-black/50 z-[9999] items-center justify-center">
-    <div class="modal-content bg-white rounded-2xl max-w-2xl w-[90%] max-h-[80vh] overflow-y-auto">
-        <div class="modal-header p-5 border-b border-slate-200 flex justify-between items-center">
-            <h3 class="text-lg font-bold text-slate-800"><i class="fas fa-user mr-2"></i> Tenant Details</h3>
-            <button class="modal-close bg-none border-none text-2xl cursor-pointer">&times;</button>
-        </div>
-        <div class="modal-body p-5" id="tenantModalBody">
-            <!-- Dynamic content -->
-        </div>
-    </div>
-</div>
-
-<!-- Custom CSS for badges and additional styles -->
-<style>
-    /* Status Badges */
-    .badge {
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        display: inline-block;
-    }
-    .badge-active { background: #d1fae5; color: #065f46; }
-    .badge-pending { background: #fed7aa; color: #92400e; }
-    .badge-inactive { background: #fee2e2; color: #991b1b; }
-
-    /* Action Buttons */
-    .action-buttons {
-        display: flex;
-        gap: 10px;
-    }
-    .action-buttons i {
-        cursor: pointer;
-        color: #94a3b8;
-        transition: 0.2s;
-        font-size: 16px;
-    }
-    .action-buttons i:hover {
-        color: #667eea;
-    }
-
-    /* Pagination */
-    .page-btn {
-        padding: 6px 12px;
-        border: 1px solid #e2e8f0;
-        background: white;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-    .page-btn.active {
-        background: #667eea;
-        color: white;
-        border-color: #667eea;
-    }
-    .page-btn:hover:not(.active) {
-        background: #f1f5f9;
-    }
-
-    /* Table Row Hover */
-    tr:hover td {
-        background-color: #faf9fe;
-    }
-    
-    th, td {
-        padding: 14px 16px;
-        text-align: left;
-        border-bottom: 1px solid #f1f5f9;
-    }
-</style>
-
-<script>
-// Tenants Data
-const tenants = [
-    { id: "TN-1001", name: "Emily Clarke", email: "emily.c@email.com", phone: "(555) 123-4567", property: "Sunset Apartments", unit: "#4B", rent: 1850, leaseEnd: "2025-01-14", status: "active", moveIn: "2024-01-15" },
-    { id: "TN-1002", name: "James Wilson", email: "james.w@email.com", phone: "(555) 234-5678", property: "Maple Grove", unit: "#12", rent: 2200, leaseEnd: "2025-03-01", status: "active", moveIn: "2024-03-01" },
-    { id: "TN-1003", name: "Sophia Martinez", email: "sophia.m@email.com", phone: "(555) 345-6789", property: "Harbor Loft", unit: "#7", rent: 1750, leaseEnd: "2025-06-09", status: "active", moveIn: "2024-06-10" },
-    { id: "TN-1004", name: "Liam Johnson", email: "liam.j@email.com", phone: "(555) 456-7890", property: "Oakwood Residence", unit: "#2", rent: 1950, leaseEnd: "2024-11-30", status: "pending", moveIn: "2023-12-01" },
-    { id: "TN-1005", name: "Olivia Brown", email: "olivia.b@email.com", phone: "(555) 567-8901", property: "Pine Hill", unit: "#9", rent: 2100, leaseEnd: "2025-02-19", status: "active", moveIn: "2024-02-20" },
-    { id: "TN-1006", name: "Noah Davis", email: "noah.d@email.com", phone: "(555) 678-9012", property: "Cedar Creek", unit: "#15", rent: 1650, leaseEnd: "2025-08-01", status: "active", moveIn: "2024-08-01" },
-    { id: "TN-1007", name: "Ava Garcia", email: "ava.g@email.com", phone: "(555) 789-0123", property: "Downtown Suites", unit: "#3", rent: 2400, leaseEnd: "2024-10-14", status: "inactive", moveIn: "2023-10-15" },
-    { id: "TN-1008", name: "Mason Rodriguez", email: "mason.r@email.com", phone: "(555) 890-1234", property: "Lakeside Villas", unit: "#8", rent: 1890, leaseEnd: "2025-04-04", status: "active", moveIn: "2024-04-05" },
-    { id: "TN-1009", name: "Isabella Miller", email: "isabella.m@email.com", phone: "(555) 901-2345", property: "West End", unit: "#22", rent: 1725, leaseEnd: "2025-09-01", status: "active", moveIn: "2024-09-01" },
-    { id: "TN-1010", name: "Ethan Martinez", email: "ethan.m@email.com", phone: "(555) 012-3456", property: "Hillcrest", unit: "#5", rent: 1980, leaseEnd: "2024-12-31", status: "pending", moveIn: "2024-01-10" }
-];
-
-let currentPage = 1;
-let rowsPerPage = 8;
-let currentFilters = { search: '', status: 'all', property: 'all', lease: 'all' };
-
-function formatDate(dateStr) {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function formatAmount(amount) {
-    return `$${amount.toLocaleString()}`;
-}
-
-function getStatusBadge(status) {
-    const badges = { 
-        'active': '<span class="badge badge-active">✅ Active</span>', 
-        'pending': '<span class="badge badge-pending">⏳ Pending</span>', 
-        'inactive': '<span class="badge badge-inactive">❌ Inactive</span>' 
-    };
-    return badges[status] || badges.active;
-}
-
-function filterTenants() {
-    return tenants.filter(tenant => {
-        if (currentFilters.search && !tenant.name.toLowerCase().includes(currentFilters.search.toLowerCase()) && !tenant.email.toLowerCase().includes(currentFilters.search.toLowerCase())) return false;
-        if (currentFilters.status !== 'all' && tenant.status !== currentFilters.status) return false;
-        if (currentFilters.property !== 'all') {
-            const propertyMap = { 'sunset': 'Sunset Apartments', 'maple': 'Maple Grove', 'harbor': 'Harbor Loft', 'oakwood': 'Oakwood Residence' };
-            if (tenant.property !== propertyMap[currentFilters.property]) return false;
-        }
-        if (currentFilters.lease !== 'all') {
-            const today = new Date();
-            const leaseEnd = new Date(tenant.leaseEnd);
-            const daysUntilEnd = Math.ceil((leaseEnd - today) / (1000 * 60 * 60 * 24));
-            if (currentFilters.lease === 'expiring' && daysUntilEnd > 30) return false;
-            if (currentFilters.lease === 'expired' && daysUntilEnd > 0) return false;
-            if (currentFilters.lease === 'active' && daysUntilEnd <= 0) return false;
-        }
-        return true;
-    });
-}
-
-function renderTable() {
-    const filtered = filterTenants();
-    const totalPages = Math.ceil(filtered.length / rowsPerPage);
-    const start = (currentPage - 1) * rowsPerPage;
-    const pageData = filtered.slice(start, start + rowsPerPage);
-    const tbody = document.getElementById('tenantsTableBody');
-  
-    
-    document.getElementById('showingInfo').innerHTML = `Showing ${start+1} to ${Math.min(start+rowsPerPage, filtered.length)} of ${filtered.length} tenants`;
-    renderPagination(totalPages);
-}
-
-function renderPagination(totalPages) {
-    const paginationDiv = document.getElementById('pagination');
-    if (totalPages <= 1) { paginationDiv.innerHTML = ''; return; }
-    let html = '';
-    for (let i = 1; i <= totalPages; i++) {
-        html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-    }
-    paginationDiv.innerHTML = html;
-}
-
-function goToPage(page) { currentPage = page; renderTable(); }
-function applyFilters() {
-    currentFilters = { 
-        search: document.getElementById('searchInput')?.value || '', 
-        status: document.getElementById('statusFilter')?.value || 'all', 
-        property: document.getElementById('propertyFilter')?.value || 'all', 
-        lease: document.getElementById('leaseFilter')?.value || 'all' 
-    };
-    currentPage = 1;
-    renderTable();
-}
-function clearFilters() {
-    if (document.getElementById('searchInput')) document.getElementById('searchInput').value = '';
-    if (document.getElementById('statusFilter')) document.getElementById('statusFilter').value = 'all';
-    if (document.getElementById('propertyFilter')) document.getElementById('propertyFilter').value = 'all';
-    if (document.getElementById('leaseFilter')) document.getElementById('leaseFilter').value = 'all';
-    applyFilters();
-}
-function viewTenant(id) { alert(`Viewing details for tenant ${id}`); }
-function editTenant(id) { alert(`Editing tenant ${id}`); }
-function messageTenant(id) { alert(`Sending message to tenant ${id}`); }
-
-// Select All functionality
-document.getElementById('selectAll')?.addEventListener('change', function(e) {
-    document.querySelectorAll('.tenant-checkbox').forEach(cb => cb.checked = e.target.checked);
-});
-
-// Event Listeners
-document.getElementById('searchInput')?.addEventListener('input', applyFilters);
-document.getElementById('statusFilter')?.addEventListener('change', applyFilters);
-document.getElementById('propertyFilter')?.addEventListener('change', applyFilters);
-document.getElementById('leaseFilter')?.addEventListener('change', applyFilters);
-document.getElementById('clearFilters')?.addEventListener('click', clearFilters);
-document.getElementById('addTenantBtn')?.addEventListener('click', () => alert('Add new tenant form'));
-document.getElementById('exportBtn')?.addEventListener('click', () => alert('Exporting tenants data'));
-document.getElementById('bulkMessageBtn')?.addEventListener('click', () => alert('Send message to selected tenants'));
-
-renderTable();
-</script>
 @endsection

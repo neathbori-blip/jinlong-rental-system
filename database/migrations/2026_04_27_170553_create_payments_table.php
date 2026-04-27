@@ -1,3 +1,4 @@
+// database/migrations/xxxx_create_payments_table.php
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,11 +14,14 @@ return new class extends Migration
             $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->date('payment_date');
-            $table->date('due_date');
-            $table->enum('status', ['paid', 'pending', 'overdue'])->default('pending');
-            $table->string('payment_method')->nullable();
-            $table->string('transaction_id')->nullable();
+            $table->string('payment_method', 50); // cash, bank transfer, credit card
+            $table->string('receipt_number')->nullable();
+            $table->text('notes')->nullable();
+            $table->enum('status', ['paid', 'pending', 'failed'])->default('paid');
             $table->timestamps();
+
+            $table->index('tenant_id');
+            $table->index('payment_date');
         });
     }
 
