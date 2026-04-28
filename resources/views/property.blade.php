@@ -1,3 +1,8 @@
+@extends('layouts.app')
+
+@section('title', 'Property Listings')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,9 +90,7 @@
             display: inline-block;
         }
     </style>
-</head>
-<body>
-
+</head> 
 <div class="container mt-4">
     <!-- Success Message -->
     @if(session('success'))
@@ -120,9 +123,7 @@
                 <div class="col-md-2">
                     <select name="type" class="form-control">
                         <option value="">All Types</option>
-                        <option
-valu
-e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</option>
+                        <option value="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</option>
                         <option value="House" {{ request('type') == 'House' ? 'selected' : '' }}>House</option>
                         <option value="Villa" {{ request('type') == 'Villa' ? 'selected' : '' }}>Villa</option>
                         <option value="Condo" {{ request('type') == 'Condo' ? 'selected' : '' }}>Condo</option>
@@ -198,11 +199,7 @@ e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</
                                 <small>{{ $property->bedrooms }} Beds</small>
                             </div>
                             <div class="col-4">
-<<<<<<< HEAD
-<i class="fas fa-bath feature-icon"></i>
-=======
                                 <i class="fas fa-bath feature-icon"></i>
->>>>>>> d3dd5d16ad4e22962316365129ff9e3d1ac0e788
                                 <small>{{ $property->bathrooms }} Baths</small>
                             </div>
                             <div class="col-4">
@@ -216,14 +213,13 @@ e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</
                                 <i class="fas fa-eye"></i> View Details
                             </a>
                         </div>
-                        <!-- Add Delete Button -->
-    <form action="{{ route('properties.destroy', $property->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property?');">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-outline-danger w-100">
-            <i class="fas fa-trash"></i> Delete
-        </button>
-</form>
+                        <form action="{{ route('properties.destroy', $property->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-outline-danger w-100">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -242,6 +238,7 @@ e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</
     </div>
 </div>
 
+<!-- Add Property Modal -->
 <!-- Add Property Modal -->
 <div class="modal fade" id="addPropertyModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -283,12 +280,8 @@ e="Apartment" {{ request('type') == 'Apartment' ? 'selected' : '' }}>Apartment</
                             <input type="number" name="bedrooms" class="form-control" required>
                         </div>
                         <div class="col-md-6 mb-3">
-<<<<<<< HEAD
                             <label
 class="form-label">Bathrooms *</label>
-=======
-                            <label class="form-label">Bathrooms *</label>
->>>>>>> d3dd5d16ad4e22962316365129ff9e3d1ac0e788
                             <input type="number" name="bathrooms" class="form-control" required>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -316,6 +309,86 @@ class="form-label">Bathrooms *</label>
     </div>
 </div>
 
+<style>
+    .property-card {
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .property-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+    .property-image {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .filter-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    .price-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+    }
+    .property-type {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(255,255,255,0.9);
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #333;
+    }
+    .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    .btn-close-white {
+        filter: brightness(0) invert(1);
+    }
+    .feature-icon {
+        margin-right: 5px;
+        color: #667eea;
+    }
+    .pagination {
+        justify-content: center;
+        margin-top: 30px;
+    }
+    .alert {
+        border-radius: 10px;
+        animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+        from {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    .sort-select {
+        max-width: 200px;
+        display: inline-block;
+    }
+</style>
+
+@push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endpush
+@endsection
