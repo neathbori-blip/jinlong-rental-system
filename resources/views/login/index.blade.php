@@ -13,7 +13,7 @@
     <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-2xl border border-gray-100">
         
         <div class="text-center">
-            <div class="mx-auto h-12 w-12 rounded bg-[#3700B3] flex items-center justify-center shadow-lg">
+            <div class="mx-auto h-12 w-12 rounded-full bg-[#3700B3] flex items-center justify-center shadow-lg">
                 <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="Open-Lock-Icon-Path-Here" />
                 </svg>

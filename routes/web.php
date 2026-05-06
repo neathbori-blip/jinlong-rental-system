@@ -52,5 +52,5 @@ Route::post('/login/authenticate', [LoginController::class, 'authenticate']);
 Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('logout');
 });
